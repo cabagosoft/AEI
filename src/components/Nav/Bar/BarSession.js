@@ -1,23 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, useState} from 'react';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer, Button, AppBar, Toolbar, List, Typography, Divider, ListItem } from '@material-ui/core';
+import { Drawer, Button, AppBar, Toolbar, List, Typography, Divider} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 import { compose } from 'recompose';
 import { consumerFirebase } from '../../../config';
 import { StateContext } from '../../../session/store';
 import { logOut } from '../../../session/actions/sessionActions';
 import { MenuRight } from './MenuRight';
-import { withRouter } from 'react-router-dom'
+import { withRouter } from 'react-router-dom';
+import ListItemsLeft from './ListItemsLeft'
 
 
 const drawerWidth = 240;
@@ -111,16 +108,17 @@ const styles = theme => ({
 });
 
 
-
 class BarSession extends Component {
 
+  
   static contextType = StateContext;
 
   state = {
     open: false,
-    firebase : null
+    firebase : null,
   };
 
+  
   componentDidMount() {
     const { firebase } = this.state; //local state
     const [{ session }, dispatch ] = this.context; //global state
@@ -156,7 +154,7 @@ class BarSession extends Component {
     const [{ session }, dispatch ] = this.context
 
     logOut(dispatch, firebase).then(success => {
-       this.props.history.push("/out");
+       this.props.history.push("/");
     })
   }
 
@@ -176,13 +174,15 @@ class BarSession extends Component {
     this.setState({ open: false }); 
   };
 
+
+
   render(){
 
     const { classes, theme } = this.props;
     const [{session}, dispatch] = this.context;
-    
-      const { user } = session;
-      let textUser = user.name + " " + user.fullname + " " + user.email
+    const { user } = session;
+    const textUser = user.name + " " + user.fullname
+
 
 
     return session ? ( session.authenticated ? (
@@ -210,7 +210,7 @@ class BarSession extends Component {
             </Typography>
             <div className={classes.grow}></div>
             <div className={classes.sectionDesktop}>
-              <Button color="inherit">Login</Button>
+              <Button color="inherit"></Button>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton 
@@ -254,14 +254,7 @@ class BarSession extends Component {
             </IconButton>
           </div>
           <Divider />
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
+          <ListItemsLeft/>
         </Drawer>
         <main className={classes.content}>
           <div className={classes.toolbar} />

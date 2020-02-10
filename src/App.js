@@ -5,9 +5,10 @@ import { Grid, Snackbar } from '@material-ui/core';
 import SignUp from './components/Register/SignUp';
 import Login from './components/Register/Login';
 import ContentApp from './components/Content/ContentApp';
-import Out from './components/Content/Out';
 import { FirebaseContext } from './config';
 import { useStateValue } from './session/store';
+import RouteAuthenticated from './components/Security/RouteAuthenticated';
+import Profile from './components/Register/Profile';
 
 
 function App() {
@@ -52,10 +53,18 @@ function App() {
         <NavBar/>
         <Grid container>
           <Switch>
+            <RouteAuthenticated 
+              exact path="/content" 
+              authFirebase={firebase.auth.currentUser} 
+              component={ContentApp}
+            />
+            <RouteAuthenticated 
+              exact path="/profile" 
+              authFirebase={firebase.auth.currentUser} 
+              component={Profile}
+            />
+            <Route path="/registration" exact component={SignUp}/>
             <Route path="/" exact component={Login}></Route>
-            <Route path="/registration" exact component={SignUp}></Route>
-            <Route path="/content" exact component={ContentApp}></Route>
-            <Route path="/out" exact component={Out}></Route>
           </Switch>
         </Grid>
       </Router>

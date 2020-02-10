@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
 import { compose } from 'recompose';
 import { consumerFirebase } from '../../config';
 import { StateContext } from '../../session/store';
 import BarSession from './Bar/BarSession';
-import DrawerLeft from './Bar/BarSession';
 
 
 const styles = theme => ({
