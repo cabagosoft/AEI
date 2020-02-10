@@ -1,7 +1,7 @@
 import React, { Component, useState} from 'react';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
-import { Drawer, Button, AppBar, Toolbar, List, Typography, Divider} from '@material-ui/core';
+import { Drawer, Button, AppBar, Toolbar, List, Typography, Divider, Avatar} from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -210,7 +210,11 @@ class BarSession extends Component {
             </Typography>
             <div className={classes.grow}></div>
             <div className={classes.sectionDesktop}>
-              <Button color="inherit"></Button>
+              <Button color="inherit" onClick={this.logOutApp}>
+                Salir
+              </Button>
+              <Button color="inherit">{textUser}</Button>
+              <Avatar src={user.image}></Avatar>
             </div>
             <div className={classes.sectionMobile}>
               <IconButton 

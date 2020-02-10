@@ -3,6 +3,8 @@ import { useStateValue } from '../../session/store';
 import { Container, Avatar, Grid, TextField, Button, Typography} from '@material-ui/core';
 import { openMensajePantalla } from '../../session/actions/snackbarAction'
 import { consumerFirebase } from '../../config/';
+import ImageUploader from 'react-images-upload';
+import uuid from 'uuid';
 
 
 const style = {
@@ -31,7 +33,7 @@ const Profile = props => {
       fullname: "",
       email: "",
       id: "",
-      avatar: ""
+      image: ""
    });
 
    const changeInfo = e => {
@@ -49,6 +51,45 @@ const Profile = props => {
          }
       }
    })
+
+   const uploadImage = images => {
+      
+      const image = images[0];  //1. Capturar la imagen
+
+      const uniqueKeyimage = uuid.v4();  //2. Renombrar la imagen
+
+      const nameImage = image.name; //3. Obtener el nombre de la imagen
+
+      const extensionImage = nameImage.split('.').pop(); //4. Obtener extension de la imagen
+
+      //5. Asignar nuevo nombre a la imagen - alias
+      const alias = (nameImage.split('.')[0] + "_" + uniqueKeyimage + "." +
+                     extensionImage).replace(/\s/g,"_").toLowerCase();
+
+      firebase.saveDocument(alias, image).then(metadata => {
+         firebase.returnDocument(alias).then(urlImage => {
+
+            state.image = urlImage;
+
+            firebase.db
+               .collection("Users")
+               .doc(firebase.auth.currentUser.uid)
+               .set(
+                  {
+                     image : urlImage
+                  },
+                  {merge: true}
+               )
+               .then(userDB => {
+                  dispatch({
+                     type: "START_SESSION",
+                     session: state,
+                     authenticated: true
+                  })
+               })
+         })
+      })
+   }
    
    const handleSubmit = e => {
       e.preventDefault();
@@ -81,10 +122,7 @@ const Profile = props => {
             ?(
                <Container component="main" maxWidth="xs" justify="center">
                   <div style={style.paper}>
-                     <Avatar style={style.avatar} src={state.avatar}/>
-                     <Typography component="h1" variant="h5">
-                        Perfil
-                     </Typography>
+                     <Avatar style={style.avatar} src={state.image}/>
                      <form style={style.form} justify="center">
                         <Grid container spacing={3} justify="center">
                            <Grid item xs={12} md={12} justify="center">
@@ -115,6 +153,17 @@ const Profile = props => {
                                  label="Email"
                                  value={state.email}
                                  onChange={changeInfo}
+                              />
+                           </Grid>
+                           <Grid item xs={12} md={12}>
+                              <ImageUploader
+                                 withIcon={false}
+                                 key={1000}
+                                 singleImage={true}
+                                 buttonText="Seleccione una imagen de perfil"
+                                 onChange={uploadImage}
+                                 imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                                 maxFileSize={5242880}
                               />
                            </Grid>
                         </Grid>
