@@ -5,6 +5,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Collapse from '@material-ui/core/Collapse';
 import PeopleIcon from '@material-ui/icons/People';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import StarBorder from '@material-ui/icons/StarBorder';
@@ -36,6 +37,12 @@ export default function ListItemsLeft() {
           <AccountCircleIcon/>
         </ListItemIcon>
         <ListItemText primary="Perfil" />
+      </ListItem>
+      <ListItem button component={Link} to="/products/new">
+        <ListItemIcon>
+          <ListAltIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Nuevo Producto" />
       </ListItem>
       <ListItem button onClick={handleClick}>
         <ListItemIcon>

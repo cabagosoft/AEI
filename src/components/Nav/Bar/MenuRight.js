@@ -7,7 +7,7 @@ export const MenuRight = ({
    classes,
    user, 
    textUser, 
-   avatarUser, 
+   imageUser, 
    logOut
 }) => (
    <div className={classes.list}> 
@@ -15,7 +15,7 @@ export const MenuRight = ({
          <ListItem button component={Link} to="/profile">
             <Avatar
                //classes = {{primary: classes.avatarSize}}
-               src={avatarUser}
+               src={imageUser}
             />
             <ListItemText 
                classes = {{primary: classes.listItemText}} 

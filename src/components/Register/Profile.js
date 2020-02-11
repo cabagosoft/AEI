@@ -21,7 +21,11 @@ const style = {
    submit: {
       marginTop: "2em",
       marginBottom: "2.5em"
-   }
+   },
+   avatar: {
+      width: 90,
+      height: 90,
+    },
 }
 
 const Profile = props => {
@@ -33,7 +37,8 @@ const Profile = props => {
       fullname: "",
       email: "",
       id: "",
-      image: ""
+      image: "",
+      phone:""
    });
 
    const changeInfo = e => {
@@ -113,19 +118,21 @@ const Profile = props => {
       .catch(error => {
          openMensajePantalla(dispatch, {
             open : true,
-            mensaje: "Erro al guardar" + error
+            mensaje: "Error al guardar" + error
          })
       })
    }
 
+   let imageKey = uuid.v4();
+
    return (session 
             ?(
-               <Container component="main" maxWidth="xs" justify="center">
+               <Container component="main" maxWidth="md" justify="center">
                   <div style={style.paper}>
                      <Avatar style={style.avatar} src={state.image}/>
                      <form style={style.form} justify="center">
                         <Grid container spacing={3} justify="center">
-                           <Grid item xs={12} md={12} justify="center">
+                           <Grid item xs={12} md={6} justify="center">
                               <TextField
                                  name="name"
                                  variant="outlined"
@@ -135,7 +142,7 @@ const Profile = props => {
                                  onChange={changeInfo}
                               />
                            </Grid>
-                           <Grid item xs={12} md={12} justify="center">
+                           <Grid item xs={12} md={6} justify="center">
                               <TextField
                                  name="fullname"
                                  variant="outlined"
@@ -145,7 +152,7 @@ const Profile = props => {
                                  onChange={changeInfo}
                               />
                            </Grid>
-                           <Grid item xs={12} md={12} justify="center">
+                           <Grid item xs={12} md={6} justify="center">
                               <TextField
                                  name="email"
                                  variant="outlined"
@@ -155,12 +162,22 @@ const Profile = props => {
                                  onChange={changeInfo}
                               />
                            </Grid>
+                           <Grid item xs={12} md={6} justify="center">
+                              <TextField
+                                 name="phone"
+                                 variant="outlined"
+                                 fullWidth
+                                 label="Teléfono"
+                                 value={state.phone}
+                                 onChange={changeInfo}
+                              />
+                           </Grid>
                            <Grid item xs={12} md={12}>
                               <ImageUploader
                                  withIcon={false}
-                                 key={1000}
+                                 key={imageKey}
                                  singleImage={true}
-                                 buttonText="Seleccione una imagen de perfil"
+                                 buttonText="Seleccione una imágen"
                                  onChange={uploadImage}
                                  imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
                                  maxFileSize={5242880}

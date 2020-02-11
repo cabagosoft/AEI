@@ -9,6 +9,7 @@ import { FirebaseContext } from './config';
 import { useStateValue } from './session/store';
 import RouteAuthenticated from './components/Security/RouteAuthenticated';
 import Profile from './components/Register/Profile';
+import NewProduct from './components/Products/NewProduct';
 
 
 function App() {
@@ -53,8 +54,7 @@ function App() {
         <NavBar/>
         <Grid container>
           <Switch>
-            <RouteAuthenticated 
-              exact path="/content" 
+            <RouteAuthenticated exact path="/content" 
               authFirebase={firebase.auth.currentUser} 
               component={ContentApp}
             />
@@ -62,6 +62,11 @@ function App() {
               exact path="/profile" 
               authFirebase={firebase.auth.currentUser} 
               component={Profile}
+            />
+            <RouteAuthenticated 
+              exact path="/products/new" 
+              authFirebase={firebase.auth.currentUser} 
+              component={NewProduct}
             />
             <Route path="/registration" exact component={SignUp}/>
             <Route path="/" exact component={Login}></Route>
