@@ -206,7 +206,7 @@ class BarSession extends Component {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" noWrap>
-              AEI
+              locura
             </Typography>
             <div className={classes.grow}></div>
             <div className={classes.sectionDesktop}>

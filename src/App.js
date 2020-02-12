@@ -10,6 +10,9 @@ import { useStateValue } from './session/store';
 import RouteAuthenticated from './components/Security/RouteAuthenticated';
 import Profile from './components/Register/Profile';
 import NewProduct from './components/Products/NewProduct';
+import ProductsList from './components/Products/ProductsList';
+import NewClient from './components/Clients/NewClient';
+import ClientList from './components/Clients/ClientsList';
 
 
 function App() {
@@ -64,10 +67,25 @@ function App() {
               component={Profile}
             />
             <RouteAuthenticated 
+              exact path="/products" 
+              authFirebase={firebase.auth.currentUser} 
+              component={ProductsList}
+            />
+            <RouteAuthenticated 
               exact path="/products/new" 
               authFirebase={firebase.auth.currentUser} 
               component={NewProduct}
             />
+            <RouteAuthenticated 
+              exact path="/clients" 
+              authFirebase={firebase.auth.currentUser} 
+              component={ClientList}
+            />
+            <RouteAuthenticated 
+              exact path="/clients/new" 
+              authFirebase={firebase.auth.currentUser} 
+              component={NewClient}
+            /> 
             <Route path="/registration" exact component={SignUp}/>
             <Route path="/" exact component={Login}></Route>
           </Switch>

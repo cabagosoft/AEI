@@ -3,12 +3,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import { List, ListItem, ListItemText } from '@material-ui/core';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Collapse from '@material-ui/core/Collapse';
-import PeopleIcon from '@material-ui/icons/People';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PeopleIcon from '@material-ui/icons/People';
+import AddBoxIcon from '@material-ui/icons/AddBox';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
@@ -24,9 +24,14 @@ const useStyles = makeStyles(theme => ({
 
 export default function ListItemsLeft() {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
+  const [
+    open, setOpen, openC, setOpenC
+  ] = React.useState(false);
 
-  const handleClick = () => {
+  const handleClickProduct = () => {
+    setOpen(!open);
+  };
+  const handleClickClient= () => {
     setOpen(!open);
   };
 
@@ -38,32 +43,39 @@ export default function ListItemsLeft() {
         </ListItemIcon>
         <ListItemText primary="Perfil" />
       </ListItem>
-      <ListItem button component={Link} to="/products/new">
+
+      <ListItem button component={Link} to="/products" onClick={handleClickProduct}>
         <ListItemIcon>
           <ListAltIcon/>
         </ListItemIcon>
-        <ListItemText primary="Nuevo Producto" />
-      </ListItem>
-      <ListItem button onClick={handleClick}>
-        <ListItemIcon>
-          <PeopleIcon />
-        </ListItemIcon>
-        <ListItemText primary="Terceros" />
+        <ListItemText primary="Productos" />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
+          <ListItem button component={Link} to="/products/new" className={classes.nested}>
             <ListItemIcon>
-              <StarBorder />
+              <AddBoxIcon/>
             </ListItemIcon>
-            <ListItemText primary="Clientes" />
+            <ListItemText primary="Nuevo Producto" />
           </ListItem>
-          <ListItem button className={classes.nested}>
+        </List>
+      </Collapse>
+
+      <ListItem button component={Link} to="/clients" onClick={handleClickClient}>
+        <ListItemIcon>
+          <PeopleIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Clientes" />
+        {open? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button component={Link} to="/clients/new" className={classes.nested}>
             <ListItemIcon>
-              <StarBorder />
+              <AddBoxIcon/>
             </ListItemIcon>
-            <ListItemText primary="Proveedores" />
+            <ListItemText primary="Nuevo Cliente" />
           </ListItem>
         </List>
       </Collapse>

@@ -36,26 +36,27 @@ const style = {
    }
 }
 
-class NewProduct extends Component {
+class NewClient extends Component {
 
    state = {
-      product:{
+      client:{
          name: '',
-         sku: '',
-         sale_price: '',
-         purchase_price: '',
-         description: '',
-         stock: '',
-         images: [],
+         nit: '',
+         contact_name: '',
+         address: '',
+         email: '',
+         city: '',
+         phone: '',
+         cell_phone:''
       },
-      files:[]
+      files: [],
    };
 
    dataIntoState = e => {
-      let product_ = Object.assign({}, this.state.product);
-      product_[e.target.name] = e.target.value;
+      let client_ = Object.assign({}, this.state.client);
+      client_[e.target.name] = e.target.value;
       this.setState({
-         product: product_
+         client: client_
       })
    }
 
@@ -69,11 +70,10 @@ class NewProduct extends Component {
       })
    }
 
-   saveProduct = () => {
+   saveClient = () => {
 
-      const { files, product } = this.state;
+      const { files, client } = this.state;
 
-      //Crear a cada imagen (archivo) un alias
       Object.keys(files).forEach(function(key){
          let dinamicValue = Math.floor(new Date().getTime()/1000);
          let name = files[key].name;
@@ -81,18 +81,18 @@ class NewProduct extends Component {
          files[key].alias = (name.split(".")[0] + "_" + dinamicValue + "." + extension).replace(/\s/g,"_").toLowerCase();
       })
 
-      const searchText = product.name + ' ' + product.description + ' ' + product.sku;
+      const searchText = client.name + ' ' + client.nit + ' ' + client.contac_name;
       let keywords = createKeyword(searchText);
 
       this.props.firebase.saveDocuments(files).then(arrayUrls => {
-         product.images = arrayUrls;
-         product.keywords = keywords;
+         client.images = arrayUrls;
+         client.keywords = keywords;
 
          this.props.firebase.db
-         .collection("Products")
-         .add(product)
+         .collection("Clients")
+         .add(client)
          .then(success => {
-            this.props.history.push("/products");
+            this.props.history.push("/clients");
          })
          .catch(error => {
             openMensajePantalla({
@@ -101,30 +101,22 @@ class NewProduct extends Component {
             })
          })
       })
-   }
-
-   dropImage = nameImage => () => {
-      this.setState({
-         files: this.state.files.filter(file => {
-            return file.name !== nameImage
-         })
-      })
+     
+   
    }
 
    render(){
-      let imageKey = uuid.v4();
-
       return(
          <Container style={style.container} xs={12} md={8}>
             <Paper style={style.paper}>
                
-               <Grid container spacing={3}>
+               <Grid container spacing={4}>
                   <Grid item xs={12} md={8}>
                      <Breadcrumbs aria-label="breadcrumb">
                         <Link color="inherit" style={style.link} href="/">
                            <HomeIcon style={style.homeIcon}/>
                         </Link>
-                        <Typography color="textPrimary">Nuevo Producto</Typography>
+                        <Typography color="textPrimary">Nuevo Cliente</Typography>
                      </Breadcrumbs>
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -133,91 +125,74 @@ class NewProduct extends Component {
                         label="Nombre"
                         fullWidth
                         onChange={this.dataIntoState}
-                        value={this.state.product.name}
+                        value={this.state.client.name}
                      />
                   </Grid>
                   <Grid item xs={12} md={6}>
                      <TextField
-                        name="sku"
-                        label="SKU"
+                        name="nit"
+                        label="Nit"
                         fullWidth
                         onChange={this.dataIntoState}
-                        value={this.state.product.sku}
+                        value={this.state.client.nit}
                      />
                   </Grid>
                   <Grid item xs={12} md={6}>
                      <TextField
-                        name="stock"
-                        label="Stock"
+                        name="contact_name"
+                        label="Contacto"
                         fullWidth
                         onChange={this.dataIntoState}
-                        value={this.state.product.stock}
+                        value={this.state.client.contact_name}
                      />
                   </Grid>
                   <Grid item xs={12} md={6}>
                      <TextField
-                        name="purchase_price"
-                        label="Precio de compra"
+                        name="address"
+                        label="Dirección"
                         fullWidth
                         onChange={this.dataIntoState}
-                        value={this.state.product.purchase_price}
+                        value={this.state.client.address}
                      />
                   </Grid>
                   <Grid item xs={12} md={6}>
                      <TextField
-                        name="sale_price"
-                        label="Precio de venta"
+                        name="email"
+                        label="Email"
                         fullWidth
                         onChange={this.dataIntoState}
-                        value={this.state.product.sale_price}
+                        value={this.state.client.email}
                      />
                   </Grid>
-                  <Grid item xs={12} md={12}>
+                  <Grid item xs={12} md={6}>
                      <TextField
-                        name="description"
-                        label="Descripción"
+                        name="city"
+                        label="Ciudad"
                         fullWidth
                         multiline
                         onChange={this.dataIntoState}
-                        value={this.state.product.description}
+                        value={this.state.client.city}
                      />
                   </Grid>
-               </Grid>
-               <Grid container justify="center">
-                  <Grid item xs={12} md={12}>
-                     <ImageUploader
-                        key = {imageKey}
-                        withIcon={false}
-                        buttonText="Seleccione las imagenes"
-                        onChange={this.uploadImages}
-                        imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
-                        maxFileSize={5242880}
+                  <Grid item xs={12} md={6}>
+                     <TextField
+                        name="phone"
+                        label="Teléfono"
+                        fullWidth
+                        multiline
+                        onChange={this.dataIntoState}
+                        value={this.state.client.phone}
                      />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                     <Table>
-                        <TableBody>
-                           {
-                              this.state.files.map((file, i) => (
-                                 <TableRow key={i}>
-                                    <TableCell align="left">
-                                       <img src={file.urlTemp} style={style.image}/>
-                                    </TableCell>
-                                    <TableCell>
-                                       <Button
-                                          variant="contained"
-                                          color="secondary"
-                                          size="small"
-                                          onClick={this.dropImage(file.name)}
-                                       >
-                                          Eliminar
-                                       </Button>
-                                    </TableCell>
-                                 </TableRow>
-                              ))
-                           }
-                        </TableBody>
-                     </Table>
+                  <Grid item xs={12} md={6}>
+                     <TextField
+                        name="cell_phone"
+                        label="Celular"
+                        fullWidth
+                        multiline
+                        onChange={this.dataIntoState}
+                        value={this.state.client.cell_phone}
+                     />
                   </Grid>
                </Grid>
                <Grid container justify="center">
@@ -229,7 +204,7 @@ class NewProduct extends Component {
                         size="large"
                         color="primary"
                         style={style.submit}
-                        onClick={this.saveProduct}
+                        onClick={this.saveClient}
                      >
                         Guardar
                      </Button>
@@ -241,4 +216,4 @@ class NewProduct extends Component {
    }
 }
 
-export default consumerFirebase(NewProduct); 
+export default consumerFirebase(NewClient); 
