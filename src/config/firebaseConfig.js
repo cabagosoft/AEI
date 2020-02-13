@@ -43,6 +43,8 @@ class firebaseConfig {
    returnDocument = (documentUrl) => this.storage.ref().child(documentUrl).getDownloadURL();
    
    saveDocuments = (documents) => this.storage.ref().saveDocuments(documents);
+
+   dropDocument = document => this.storage.ref().child(document).delete();
    
 }
 

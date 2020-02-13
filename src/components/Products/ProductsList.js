@@ -51,15 +51,11 @@ const style = {
    paper: {
       marginTop: "2em",
       paddingTop: "1em",
-      paddingLeft: "4em",
       paddingBottom: "2em",
-      paddingRight: "4em",
       alignContent: "center",
       width: "100%"
    }
 }
-
-
 
 class ProductsList extends Component {
    
@@ -143,10 +139,13 @@ class ProductsList extends Component {
    }
 
 
+   editProduct = id => {
+      this.props.history.push("/products/" + id);
+   }
+
    render() {
       return (
          <Container style={style.cardGrid} xs={12} md={8}>
-           
                <Grid container spacing={3}>
                   <Grid item xs={12} md={12}>
                      <Breadcrumbs aria-label="breadcrumb">
@@ -192,7 +191,7 @@ class ProductsList extends Component {
                                              <TableCell align="center">{info.stock}</TableCell>
                                              <TableCell align="center">{info.purchase_price}</TableCell>
                                              <TableCell align="center">{info.sale_price}</TableCell>
-                                             <Button size="small" color="primary">
+                                             <Button size="small" color="primary" onClick={() => this.editProduct(info.id)}>
                                                 Editar
                                              </Button>
                                              <Button size="small" color="primary" onClick={() => this.dropProduct(info.id)}>

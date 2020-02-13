@@ -13,6 +13,7 @@ import NewProduct from './components/Products/NewProduct';
 import ProductsList from './components/Products/ProductsList';
 import NewClient from './components/Clients/NewClient';
 import ClientList from './components/Clients/ClientsList';
+import EditProduct from './components/Products/EditProduct';
 
 
 function App() {
@@ -75,6 +76,11 @@ function App() {
               exact path="/products/new" 
               authFirebase={firebase.auth.currentUser} 
               component={NewProduct}
+            />
+            <RouteAuthenticated 
+              exact path="/products/:id" 
+              authFirebase={firebase.auth.currentUser} 
+              component={EditProduct}
             />
             <RouteAuthenticated 
               exact path="/clients" 

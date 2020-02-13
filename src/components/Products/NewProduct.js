@@ -13,7 +13,6 @@ const style = {
       paddingLeft: "5em"
    },
    paper: {
-      marginTop: "2em",
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
@@ -33,6 +32,11 @@ const style = {
    },
    image: {
       height: "100px",
+   },
+   paperForm: {
+      padding: "2em",
+      marginTop: "2em",
+      paddingBottom: "4em"
    }
 }
 
@@ -117,7 +121,6 @@ class NewProduct extends Component {
       return(
          <Container style={style.container} xs={12} md={8}>
             <Paper style={style.paper}>
-               
                <Grid container spacing={3}>
                   <Grid item xs={12} md={8}>
                      <Breadcrumbs aria-label="breadcrumb">
@@ -127,6 +130,10 @@ class NewProduct extends Component {
                         <Typography color="textPrimary">Nuevo Producto</Typography>
                      </Breadcrumbs>
                   </Grid>
+               </Grid>
+            </Paper> 
+            <Paper style={style.paperForm}>
+               <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
                      <TextField
                         name="name"
@@ -172,7 +179,7 @@ class NewProduct extends Component {
                         value={this.state.product.sale_price}
                      />
                   </Grid>
-                  <Grid item xs={12} md={12}>
+                  <Grid item xs={12} md={6}>
                      <TextField
                         name="description"
                         label="Descripción"
@@ -183,59 +190,59 @@ class NewProduct extends Component {
                      />
                   </Grid>
                </Grid>
-               <Grid container justify="center">
-                  <Grid item xs={12} md={12}>
-                     <ImageUploader
-                        key = {imageKey}
-                        withIcon={false}
-                        buttonText="Seleccione las imagenes"
-                        onChange={this.uploadImages}
-                        imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
-                        maxFileSize={5242880}
-                     />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                     <Table>
-                        <TableBody>
-                           {
-                              this.state.files.map((file, i) => (
-                                 <TableRow key={i}>
-                                    <TableCell align="left">
-                                       <img src={file.urlTemp} style={style.image}/>
-                                    </TableCell>
-                                    <TableCell>
-                                       <Button
-                                          variant="contained"
-                                          color="secondary"
-                                          size="small"
-                                          onClick={this.dropImage(file.name)}
-                                       >
-                                          Eliminar
-                                       </Button>
-                                    </TableCell>
-                                 </TableRow>
-                              ))
-                           }
-                        </TableBody>
-                     </Table>
-                  </Grid>
+            </Paper>   
+            <Grid container justify="center">
+               <Grid item xs={12} md={12}>
+                  <ImageUploader
+                     key = {imageKey}
+                     withIcon={false}
+                     buttonText="Seleccione las imagenes"
+                     onChange={this.uploadImages}
+                     imgExtension={[".jpg", ".gif", ".png", ".jpeg"]}
+                     maxFileSize={5242880}
+                  />
                </Grid>
-               <Grid container justify="center">
-                  <Grid item xs={12} md={6}>
-                     <Button
-                        type="button"
-                        fullWidth
-                        variant="contained"
-                        size="large"
-                        color="primary"
-                        style={style.submit}
-                        onClick={this.saveProduct}
-                     >
-                        Guardar
-                     </Button>
-                  </Grid>
+               <Grid item xs={12} sm={6}>
+                  <Table>
+                     <TableBody>
+                        {
+                           this.state.files.map((file, i) => (
+                              <TableRow key={i}>
+                                 <TableCell align="left">
+                                    <img src={file.urlTemp} style={style.image}/>
+                                 </TableCell>
+                                 <TableCell>
+                                    <Button
+                                       variant="contained"
+                                       color="secondary"
+                                       size="small"
+                                       onClick={this.dropImage(file.name)}
+                                    >
+                                       Eliminar
+                                    </Button>
+                                 </TableCell>
+                              </TableRow>
+                           ))
+                        }
+                     </TableBody>
+                  </Table>
                </Grid>
-            </Paper>
+            </Grid>
+            <Grid container justify="center">
+               <Grid item xs={12} md={6}>
+                  <Button
+                     type="button"
+                     fullWidth
+                     variant="contained"
+                     size="large"
+                     color="primary"
+                     style={style.submit}
+                     onClick={this.saveProduct}
+                  >
+                     Guardar
+                  </Button>
+               </Grid>
+            </Grid>
          </Container>
       );
    }
