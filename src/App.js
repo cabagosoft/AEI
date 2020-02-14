@@ -14,6 +14,12 @@ import ProductsList from './components/Products/ProductsList';
 import NewClient from './components/Clients/NewClient';
 import ClientList from './components/Clients/ClientsList';
 import EditProduct from './components/Products/EditProduct';
+import NewInvoice from './components/Invoices/NewInvoice';
+import InvoicesList from './components/Invoices/InvoicesList';
+import ConfigInvoicesList from './components/Invoices/ConfigInvoices/ConfigInvoicesList';
+import ConfigInvoices from './components/Invoices/ConfigInvoices/ConfigInvoices';
+import EditConfigInvoices from './components/Invoices/ConfigInvoices/EditConfigInvoices';
+
 
 
 function App() {
@@ -91,6 +97,31 @@ function App() {
               exact path="/clients/new" 
               authFirebase={firebase.auth.currentUser} 
               component={NewClient}
+            /> 
+            <RouteAuthenticated 
+              exact path="/invoices" 
+              authFirebase={firebase.auth.currentUser} 
+              component={InvoicesList}
+            /> 
+            <RouteAuthenticated 
+              exact path="/invoices/new" 
+              authFirebase={firebase.auth.currentUser} 
+              component={NewInvoice}
+            /> 
+            <RouteAuthenticated 
+              exact path="/invoices/config" 
+              authFirebase={firebase.auth.currentUser} 
+              component={ConfigInvoicesList}
+            /> 
+            <RouteAuthenticated 
+              exact path="/invoices/config/new" 
+              authFirebase={firebase.auth.currentUser} 
+              component={ConfigInvoices}
+            /> 
+            <RouteAuthenticated 
+              exact path="/invoices/config/:id" 
+              authFirebase={firebase.auth.currentUser} 
+              component={EditConfigInvoices}
             /> 
             <Route path="/registration" exact component={SignUp}/>
             <Route path="/" exact component={Login}></Route>

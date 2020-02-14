@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Container, Paper, Grid, Breadcrumbs, Link, Typography, TextField, Table, TableContainer, Button, TableHead, TableRow, TableBody, TableCell, Avatar} from '@material-ui/core';
 import { withStyles, makeStyles, StylesProvider } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import { consumerFirebase } from '../../config';
 
 
@@ -57,11 +55,11 @@ const style = {
    }
 }
 
-class ProductsList extends Component {
+class InvoicesList extends Component {
    
 
    state = {
-      products: [],
+      configInvoices: [],
       searchText: ""
    }
 
@@ -79,24 +77,24 @@ class ProductsList extends Component {
         typing: false,
         typingTimeout: setTimeout(goTime => {
            let objectQuery = this.props.firebase.db
-           .collection("Products")
-           .orderBy("name")
+           .collection("ConfigInvoices")
+           .orderBy("prefix")
            .where("keywords", "array-contains", self.state.searchText.toLowerCase());
 
            if(self.state.searchText.trim()===""){
               objectQuery = this.props.firebase.db
-              .collection("Products")
-              .orderBy("name");
+               .collection("ConfigInvoices")
+               .orderBy("prefix")
            }
 
            objectQuery.get().then(snapshot => {
-              const arrayProduct = snapshot.docs.map(doc=>{
+              const arrayConfigInvoices = snapshot.docs.map(doc=>{
                  let data = doc.data();
                  let id = doc.id;
                  return {id, ...data};
               })
               this.setState({
-                 products: arrayProduct
+                 configInvoices: arrayConfigInvoices
               })
            })
         }, 500)
@@ -104,43 +102,43 @@ class ProductsList extends Component {
    }
 
    async componentDidMount(){
-      let objectQuery = this.props.firebase.db.collection("Products").orderBy("name");
+      let objectQuery = this.props.firebase.db.collection("ConfigInvoices").orderBy("prefix");
 
       const snapshot = await objectQuery.get();
 
-      const arrayProduct = snapshot.docs.map(doc => {
+      const arrayConfigInvoices = snapshot.docs.map(doc => {
          let data = doc.data();
          let id = doc.id;
          return { id, ...data};
       })
 
       this.setState({
-         products: arrayProduct
+         configInvoices: arrayConfigInvoices
       })
    }
 
-   dropProduct = id => {
+   dropConfigInvoices = id => {
       this.props.firebase.db
-      .collection("Products")
+      .collection("ConfigInvoices")
       .doc(id)
       .delete()
       .then(success => {
-         this.dropProductToList(id);
+         this.dropConfigInvoicesToList(id);
       })
    }
 
-   dropProductToList = id => {
-      const productListNew = this.state.products.filter (
-         product => product.id!==id
+   dropConfigInvoicesToList = id => {
+      const configInvoiceListNew = this.state.products.filter (
+         configInvoice => configInvoice.id!==id
       )
       this.setState({
-         products: productListNew
+         configInvoices: configInvoiceListNew
       })
    }
 
 
-   editProduct = id => {
-      this.props.history.push("/products/" + id);
+   editConfigInvoices = id => {
+      this.props.history.push("/invoices/config/" + id);
    }
 
    render() {
@@ -152,13 +150,13 @@ class ProductsList extends Component {
                         <Link color="inherit" style={style.link} href="/">
                            <HomeIcon style={style.homeIcon}/>
                         </Link>
-                        <Typography color="textPrimary">Productos</Typography>
+                        <Typography color="textPrimary">Facturas De Venta</Typography>
                      </Breadcrumbs>
                   </Grid>
                   <Grid item xs={12} sm={4} style={style.gridTextField}>
                      <TextField
                         name="searchText"
-                        label="Buscar Producto"
+                        label="Buscar Facturas"
                         variant="outlined"
                         fullWidth
                         onChange={this.changeSearchText}
@@ -170,31 +168,29 @@ class ProductsList extends Component {
                      <Grid container spacing={4}>
                         <Grid item xs={12} md={12}>
                            <Paper style={style.paper} justify="center" elevation={3} xs={12}>
-                              <TableContainer style={style.tablecontainer} justify="center">
+                              <TableContainer style={style.tablecontainer} justoify="center">
                                  <Table style={style.table} justify="center" aria-label="simple table">
                                     <TableHead style={style.head}>
                                        <TableRow style={style.row}>
-                                          <TableCell align="center">Nombre</TableCell>
-                                          <TableCell align="center">Descripción</TableCell>
-                                          <TableCell align="center">SKU</TableCell>
-                                          <TableCell align="center">Stock</TableCell>
-                                          <TableCell align="center">Precio De Compra</TableCell>
-                                          <TableCell align="center">Precio De Venta</TableCell>
+                                          <TableCell align="center">No Factura</TableCell>
+                                          <TableCell align="center">Cliente</TableCell>
+                                          <TableCell align="center">Fecha Generada</TableCell>
+                                          <TableCell align="center">Fecha Vencimiento</TableCell>
+                                          <TableCell align="center">Total</TableCell>
                                        </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                       {this.state.products.map(info => (
+                                       {this.state.configInvoices.map(info => (
                                           <TableRow key={info.id}>
-                                             <TableCell align="center">{info.name}</TableCell>
-                                             <TableCell align="center">{info.description}</TableCell>
-                                             <TableCell align="center">{info.sku}</TableCell>
-                                             <TableCell align="center">{info.stock}</TableCell>
-                                             <TableCell align="center">{info.purchase_price}</TableCell>
-                                             <TableCell align="center">{info.sale_price}</TableCell>
-                                             <Button size="small" color="primary" onClick={() => this.editProduct(info.id)}>
+                                             <TableCell align="center">{info.prefix}</TableCell>
+                                             <TableCell align="center">{info.resolution}</TableCell>
+                                             <TableCell align="center">{info.date}</TableCell>
+                                             <TableCell align="center">{info.due_date}</TableCell>
+                                             <TableCell align="center">{info.initial_range}</TableCell>
+                                             <Button size="small" color="primary" onClick={() => this.editConfigInvoices(info.id)}>
                                                 Editar
                                              </Button>
-                                             <Button size="small" color="primary" onClick={() => this.dropProduct(info.id)}>
+                                             <Button size="small" color="primary" onClick={() => this.dropConfigInvoices(info.id)}>
                                                 Eliminar
                                              </Button> 
                                              
@@ -212,4 +208,4 @@ class ProductsList extends Component {
       )
    }
 }
-export default consumerFirebase(ProductsList)
+export default consumerFirebase(InvoicesList)

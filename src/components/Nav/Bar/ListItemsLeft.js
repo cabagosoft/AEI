@@ -6,9 +6,11 @@ import Collapse from '@material-ui/core/Collapse';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PeopleIcon from '@material-ui/icons/People';
 import AddBoxIcon from '@material-ui/icons/AddBox';
+import ClearAllRoundedIcon from '@material-ui/icons/ClearAllRounded';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
@@ -36,6 +38,7 @@ export default function ListItemsLeft() {
   };
 
   return (
+    <>
     <List>
       <ListItem button component={Link} to="/profile">
         <ListItemIcon>
@@ -46,7 +49,7 @@ export default function ListItemsLeft() {
 
       <ListItem button component={Link} to="/products" onClick={handleClickProduct}>
         <ListItemIcon>
-          <ListAltIcon/>
+          <ClearAllRoundedIcon/>
         </ListItemIcon>
         <ListItemText primary="Productos" />
         {open ? <ExpandLess /> : <ExpandMore />}
@@ -79,6 +82,33 @@ export default function ListItemsLeft() {
           </ListItem>
         </List>
       </Collapse>
+
+      <ListItem button component={Link} to="/invoices" onClick={handleClickClient}>
+        <ListItemIcon>
+          <ListAltIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Facturas" />
+        {open? <ExpandLess /> : <ExpandMore />}
+      </ListItem>
+      <Collapse in={open} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          <ListItem button component={Link} to="/invoices/new" className={classes.nested}>
+            <ListItemIcon>
+              <AddBoxIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Nueva Factura" />
+          </ListItem>
+        </List>
+        <List component="div" disablePadding>
+          <ListItem button component={Link} to="/invoices/config" className={classes.nested}>
+            <ListItemIcon>
+              <SettingsIcon/>
+            </ListItemIcon>
+            <ListItemText primary="Nueva Factura" />
+          </ListItem>
+        </List>
+      </Collapse>
     </List>
+    </>
   );
 }
